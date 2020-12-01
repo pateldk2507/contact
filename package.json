@@ -1,0 +1,16 @@
+{
+  "name": "assignment-contact",
+  "version": "1.0.0",
+  "description": "Contact List assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dhaval Patel",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "jquery": "^3.5.1"
+  }
+}

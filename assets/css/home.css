@@ -1,0 +1,25 @@
+body{
+    text-align: center;
+    background-color: #f0f0f0;
+}
+
+.inputContact{
+    border-radius: 7px;
+    padding: 10px;
+    border-color: blueviolet;
+}
+
+.table{
+    width: 500px;
+}
+
+td{
+    font-size: 18px;
+    text-align: center;
+    
+}
+th{
+    text-align:center;
+}
+    
+
