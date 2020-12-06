@@ -20,11 +20,7 @@
   <body>
     <h1>Contact List</h1>
 
-  
-        <% if(type == "updateContact"){ 
-        var contactName = updateContact.name; 
-        var contactMobile = updateContact.phone;
-            %>
+<%  if(type== "updateContact") { var res = update_list;  %>
 <script>
         $(document).ready(function(){
             
@@ -32,7 +28,7 @@
         
         });
     </script>
-    <% } %> 
+    <%  } else { var resAll = contact_list;  }%>
 
   <!-- Modal -->
   <div class="modal fade" id="addContactModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -66,8 +62,8 @@
         <div class="modal-body">
             <form action="" method="post">
 
-                <input type="text" name="name" id="name"  placeholder="Enter Name" required class="inputContact" <% if(type == "updateContact"){%>  value =  <%=contactName %> <%}%>/> <br><br>
-                <input type="text" name="phone" id="phone" placeholder="Enter Mobile Number" disabled  class="inputContact" <% if(type == "updateContact"){%>  value =  <%=contactMobile %> <%}%> />
+                <input type="text" name="name" id="name"  placeholder="Enter Name" required class="inputContact" <% if(type == "updateContact"){%>  value =  <%=res[0].name %> <%}%>/> <br><br>
+                <input type="text" name="phone" id="phone" placeholder="Enter Mobile Number" disabled  class="inputContact" <% if(type == "updateContact"){%>  value =  <%=res[0].phone %> <%}%> />
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" formaction="/update-contact" >Update</button>
                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -99,15 +95,15 @@
     </thead>
     <tbody>
       
-        <% var count=0; for(let i of contact_list){ %>
+        <% if(type != "updateContact") { var count=0; for(let i of resAll){ %>
              <tr>
                     <th scope="row"> <%=count+=1; %> </th>
                     <td><%= i.name %></td>
                     <td><%= i.phone %></td>
-                    <td><a href="/get-contact-details/<%= i.phone %>" ><i class="fa fa-pencil fa-1x" aria-hidden="true"></i></a></td>
-                    <td><a href="/delete-contact/<%= i.phone %>" ><i class="fa fa-trash fa-1x" aria-hidden="true"></i></a></td>
+                    <td><a href="/get-contact-details/<%= i._id %>" ><i class="fa fa-pencil fa-1x" aria-hidden="true"></i></a></td>
+                    <td><a href="/delete-contact/<%= i._id %>" ><i class="fa fa-trash fa-1x" aria-hidden="true"></i></a></td>
             </tr>
-        <% } %>
+        <% }} %>
     </tbody>
   </table>
 

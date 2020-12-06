@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const port = 8000;
-var $ = require('jquery');
+const db = require('./config/mongoose');
+const Contact = require('./models/Contact');
 
 const app = express();
 
@@ -29,57 +30,98 @@ const ContactList = [
 var phone;
 
 app.get('/',function(req,res){
-    return res.render('home',{
-        type : "getContact",
-        title: "Contacts",
-        contact_list : ContactList,
-    });
+
+    Contact.find({}, function(err,contacts){
+
+        if(err){
+            console.log("Error",err);
+            return;
+        }
+
+        return res.render('home',{
+            type : "getContact",
+            title: "Contacts",
+            contact_list : contacts,
+        });
+
+    })
+
+    
 });
 
 app.post('/create-contact',function(req,res){
 
-    ContactList.push({
+    // ContactList.push({
+    //     name: req.body.name,
+    //     phone: req.body.phone,
+    // });
+
+    Contact.create({
         name: req.body.name,
         phone: req.body.phone,
-    });
+    }, function(err, newContact){
 
-    res.redirect('/');
-    
+        if(err){
+            console.log("Error in create contact");
+            return;
+        }
+
+        console.log("********", newContact);
+        return res.redirect('back');
+    })
+
+
 });
 
 
-app.get('/delete-contact/:phone',function(req,res){
+app.get('/delete-contact/:id',function(req,res){
 
-    let phone =req.params.phone;
+    let id =req.params.id;
     
-    let contactIndex = ContactList.findIndex(contact => contact.phone == phone);
+    // let contactIndex = ContactList.findIndex(contact => contact.phone == phone);
     
-    if(contactIndex != -1){
-        ContactList.splice(contactIndex,1);
-    }
+    // if(contactIndex != -1){
+    //     ContactList.splice(contactIndex,1);
+    // }
 
-    res.redirect('back');
+    Contact.findByIdAndDelete(id, function(err){
+        console.log("error while deleting data!",err);
+        return;
+    })
+
+    return res.redirect('back');
 });
 
 
-app.get('/get-contact-details/:phone',function(req,res){
+app.get('/get-contact-details/:id',function(req,res){
 
-     phone =req.params.phone;
+     id =req.params.id;
     
-    let contactIndex = ContactList.findIndex(contact => contact.phone == phone);
+    // let contactIndex = ContactList.findIndex(contact => contact.phone == phone);
     
-    if(contactIndex != -1){
+    // if(contactIndex != -1){
         
-        console.log(ContactList[contactIndex]);
+    //     console.log(ContactList[contactIndex]);
+    // }
 
 
-        return res.render('home',{
-            type : "updateContact",
-            updateContact : ContactList[contactIndex],
-            contact_list : ContactList,
-        });
-    }
+    
+        Contact.find({'_id':id}, function(err,contacts){
 
+            if(err){
+                console.log("Error",err);
+                return;
+            }
+            
+            console.log("Find ID", contacts);
+
+            return res.render('home',{
+                type : "updateContact",
+                update_list : contacts,
+            });
+    })
+
+    
    
 });
 
